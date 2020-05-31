@@ -8,12 +8,14 @@ namespace Assets.Source
     public class FieldManager : MonoBehaviour
     {
         private static FieldManager instance;
-        public static FieldManager Instance => instance ?? (instance = FindObjectOfType<FieldManager>());
+        public static FieldManager Instance => (instance == null || !instance.isActiveAndEnabled)
+            ? (instance = FindObjectOfType<FieldManager>())
+            : instance;
 
         public Tile[,] Field { get; private set; }
 
         [SerializeField] private GameObject tilePrefab;
-        [SerializeField] private Sprite[] tileTypes;
+        [SerializeField] public Sprite[] TileTypes;
 
         /// <summary>
         /// Generate level from its data
@@ -27,9 +29,11 @@ namespace Assets.Source
                 for (int j = 0; j < level.TileTypes.GetLength(1); j++)
                 {
                     int tileType = level.TileTypes[i, j];
-                    GameObject go = Instantiate(tilePrefab, new Vector3(i, j), Quaternion.identity, transform);
+                    GameObject go = Instantiate(tilePrefab, transform.position + new Vector3(i + 0.5F, -j - 0.5F), Quaternion.identity, transform);
                     Tile tile = go.GetComponent<Tile>();
-                    go.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = tileTypes[tileType];
+                    SpriteRenderer sr = go.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+                    sr.sprite = TileTypes[tileType];
+                    sr.material = go.GetComponent<SpriteRenderer>().material;
                     tile.Initialize(i, j, tileType);
                     Field[i, j] = tile;
                 }

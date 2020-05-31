@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Source.InputManagement;
 using Assets.Source.RulesManagement;
+using Assets.Source.UIManagement;
 using UnityEngine;
 
 namespace Assets.Source
@@ -21,7 +23,9 @@ namespace Assets.Source
     public class Player : MonoBehaviour, IInputSubscriber
     {
         private static Player instance;
-        public static Player Instance => instance ?? (instance = FindObjectOfType<Player>());
+        public static Player Instance => (instance == null || !instance.isActiveAndEnabled)
+            ? (instance = FindObjectOfType<Player>())
+            : instance;
 
         public PlayerState State = PlayerState.Idle;
 
@@ -37,10 +41,20 @@ namespace Assets.Source
 
         [SerializeField] private LifeUI lifeUI;
 
+        private Animator animator;
+        private const string shootAnimatorParam = "Shoot";
+        private const string deadAnimatorParam = "Dead";
+        private const string walkAnimatorParam = "Walk";
+
+        [SerializeField] private Transform gunPoint;
+        [SerializeField] private GameObject shootEffectPrefab;
+
         private void Start()
         {
             AutoInputInitializer.InputManager.Subscribe(this);
             lifeUI.SetMaxLife(MaxLife);
+            animator = GetComponentInChildren<Animator>();
+            StartCoroutine(DialogsManager.Instance.ShowDialog(transform.GetChild(0), "Lets go!"));
         }
 
         private void Update()
@@ -51,6 +65,7 @@ namespace Assets.Source
                     transform.position, currentTile.transform.position, Time.deltaTime * speed);
                 if (Vector2.Distance(transform.position, currentTile.transform.position) < Mathf.Epsilon)
                 {
+                    animator.SetBool(walkAnimatorParam, false);
                     State = PlayerState.Idle;
                     OnMoveToTile();
                 }
@@ -65,6 +80,7 @@ namespace Assets.Source
                     transform.position, reward.transform.position, Time.deltaTime * speed);
                 if (Vector2.Distance(transform.position, reward.transform.position) < Mathf.Epsilon)
                 {
+                    animator.SetBool(walkAnimatorParam, false);
                     State = PlayerState.Waiting;
                     OnMoveToReward();
                 }
@@ -114,11 +130,15 @@ namespace Assets.Source
                 return;
 
             State = tile == null ? PlayerState.MovingToReward : PlayerState.Moving;
+            animator.SetBool(walkAnimatorParam, true);
             currentTile = tile;
         }
 
         private bool CanMoveTo(Tile tile)
         {
+            if (GameManager.Instance.GameStage != GameStage.PlayerMovement)
+                return false;
+
             if (tile == null)
             {
                 // Move to idol
@@ -135,6 +155,20 @@ namespace Assets.Source
         public void Handle(Tile input)
         {
             TryMoveTo(input);
+        }
+
+        public IEnumerator AnimateShoot()
+        {
+            transform.GetChild(0).localScale = new Vector3(1, 1 ,1);
+            StartCoroutine(DialogsManager.Instance.ShowDialog(transform.GetChild(0), "Die liar!"));
+            yield return new WaitForSeconds(1.5F);
+            animator.SetTrigger(shootAnimatorParam);
+            Destroy(Instantiate(shootEffectPrefab, gunPoint.transform.position, Quaternion.identity), 2F);
+        }
+
+        public void AnimateDead()
+        {
+            animator.SetTrigger(deadAnimatorParam);
         }
     }
 }

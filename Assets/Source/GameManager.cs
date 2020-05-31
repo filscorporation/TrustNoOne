@@ -1,4 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Assets.Source.UIManagement;
 using UnityEngine;
 
 namespace Assets.Source
@@ -18,20 +21,21 @@ namespace Assets.Source
     public class GameManager : MonoBehaviour
     {
         private static GameManager instance;
-        public static GameManager Instance => instance ?? (instance = FindObjectOfType<GameManager>());
+        public static GameManager Instance => (instance == null || !instance.isActiveAndEnabled)
+            ? (instance = FindObjectOfType<GameManager>())
+            : instance;
 
         public GameStage GameStage;
 
-        private void Awake()
+        private void Start()
         {
-            StartGame(0);
+            StartCoroutine(StartGame(LevelManager.LevelToLoad));
         }
 
-        private void StartGame(int levelIndex)
+        private IEnumerator StartGame(int levelIndex)
         {
-            LevelManager levelManager = new LevelManager();
-            levelManager.LoadAllLevels();
-            Level currentLevel = levelManager.GetLevel(levelIndex);
+            LevelManager.Instance.LoadAllLevels();
+            Level currentLevel = LevelManager.Instance.Levels[levelIndex];
             FieldManager.Instance.Generate(currentLevel);
             NPCManager.Instance.Initialize(currentLevel);
             Player.Instance.MaxLife = currentLevel.PlayersLife;
@@ -39,19 +43,25 @@ namespace Assets.Source
 
             GameStage = GameStage.Intro;
             StartCoroutine(ShowIntro());
+            yield break;
         }
 
         private IEnumerator ShowIntro()
         {
-            yield return new WaitForSeconds(1F);
+            yield return new WaitForSeconds(2F);
             GameStage = GameStage.PlayerMovement;
         }
 
         public IEnumerator OnPlayerDead()
         {
+            EndGame();
+            yield break;
+        }
+
+        private void EndGame()
+        {
             GameStage = GameStage.PlayerDead;
             StartCoroutine(UIManager.Instance.ShowPlayerDeadScreen());
-            yield break;
         }
 
         public IEnumerator OnPlayerPassed()
@@ -63,7 +73,27 @@ namespace Assets.Source
 
         public IEnumerator OnAllLiarsChosen()
         {
+            List<NPC> liarsLeft = NPCManager.Instance.NPCs.Where(n => !n.IsDead && n.IsLiar).ToList();
+            yield return new WaitForSeconds(2F);
+            foreach (NPC npc in liarsLeft)
+            {
+                StartCoroutine(npc.AnimateBetray());
+            }
+            yield return new WaitForSeconds(1.7F);
+            if (liarsLeft.Any())
+            {
+                Player.Instance.AnimateDead();
+                EndGame();
+                yield break;
+            }
             GameStage = GameStage.TakeReward;
+
+            foreach (NPC npc in NPCManager.Instance.NPCs.Where(n => !n.IsDead && !n.IsLiar))
+            {
+                StartCoroutine(npc.AnimateWon());
+            }
+
+            StartCoroutine(UIManager.Instance.ShowWonScreen());
             yield break;
         }
     }

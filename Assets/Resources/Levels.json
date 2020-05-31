@@ -1,6 +1,6 @@
 [
   {
-    "Index": 1,
+    "Index": 0,
     "PlayersLife": 3,
     "TileTypes": [
       [ 0, 1, 0 ],
@@ -10,7 +10,7 @@
     "NPCs": [
       {
         "TypeIndex": 0,
-        "IsLiar": false,
+        "IsLiar": true,
         "Rules": [
           {
             "Name": "CantMoveOn",
@@ -22,6 +22,40 @@
       },
       {
         "TypeIndex": 1,
+        "IsLiar": false,
+        "Rules": [
+          {
+            "Name": "CantMoveOn",
+            "Parameters": {
+              "TileType": 1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Index": 1,
+    "PlayersLife": 2,
+    "TileTypes": [
+      [ 1, 2],
+      [ 1, 0]
+    ],
+    "NPCs": [
+      {
+        "TypeIndex": 2,
+        "IsLiar": false,
+        "Rules": [
+          {
+            "Name": "CantMoveOn",
+            "Parameters": {
+              "TileType": 0
+            }
+          }
+        ]
+      },
+      {
+        "TypeIndex": 3,
         "IsLiar": true,
         "Rules": [
           {

@@ -15,13 +15,13 @@ namespace Assets.Source.RulesManagement.Rules
     {
         public override string Name => nameof(CantMoveDirection);
 
-        private const string directionParam = "Direction";
+        public const string DirectionParam = "Direction";
 
         public override bool Check(Tile[,] field, List<Step> steps, Dictionary<string, int> parameters)
         {
             if (steps.Count < 2)
                 return false;
-            return StepDirection(steps.Last()) == (Direction)parameters[directionParam];
+            return StepDirection(steps.Last()) == (Direction)parameters[DirectionParam];
         }
     }
 }
