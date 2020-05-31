@@ -18,16 +18,37 @@ namespace Assets.Source.UIManagement
 
         public void OnRestartButtonClick()
         {
+            StartCoroutine(SceneTransitionManager.Instance.FadeIn());
+            StartCoroutine(ReloadGameScene());
+        }
+
+        private IEnumerator ReloadGameScene()
+        {
+            yield return new WaitForSeconds(0.5F);
             SceneManager.LoadScene(MainMenuUIManager.GameSceneName);
         }
 
         public void OnToMenuButtonClick()
         {
+            StartCoroutine(SceneTransitionManager.Instance.FadeIn());
+            StartCoroutine(LoadMainMenuScene());
+        }
+
+        private IEnumerator LoadMainMenuScene()
+        {
+            yield return new WaitForSeconds(0.5F);
             SceneManager.LoadScene(MainMenuUIManager.MainMenuSceneName);
         }
 
         public void OnToNextLevelButtonClick()
         {
+            StartCoroutine(SceneTransitionManager.Instance.FadeIn());
+            StartCoroutine(LoadNextLevel());
+        }
+
+        private IEnumerator LoadNextLevel()
+        {
+            yield return new WaitForSeconds(0.5F);
             if (LevelManager.LevelToLoad + 1 == LevelManager.Instance.Levels.Count)
             {
                 SceneManager.LoadScene(MainMenuUIManager.MainMenuSceneName);

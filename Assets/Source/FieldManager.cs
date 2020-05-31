@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Assets.Source
 {
@@ -16,6 +17,8 @@ namespace Assets.Source
 
         [SerializeField] private GameObject tilePrefab;
         [SerializeField] public Sprite[] TileTypes;
+        [SerializeField] private GameObject trapEffect;
+        private const string trapEffectEndParam = "End";
 
         /// <summary>
         /// Generate level from its data
@@ -38,6 +41,18 @@ namespace Assets.Source
                     Field[i, j] = tile;
                 }
             }
+        }
+
+        /// <summary>
+        /// Animates trap effect on the tile
+        /// </summary>
+        /// <param name="tile"></param>
+        public IEnumerator ShowTrap(Tile tile)
+        {
+            GameObject go = Instantiate(trapEffect, tile.transform.position, Quaternion.identity);
+            Destroy(go, 2F);
+            yield return new WaitForSeconds(1F);
+            go.GetComponent<Animator>().SetTrigger(trapEffectEndParam);
         }
     }
 }

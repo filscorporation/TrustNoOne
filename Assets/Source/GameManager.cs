@@ -94,6 +94,7 @@ namespace Assets.Source
             }
 
             StartCoroutine(UIManager.Instance.ShowWonScreen());
+            LevelManager.Instance.IncreaseLevelsOpened();
             yield break;
         }
     }

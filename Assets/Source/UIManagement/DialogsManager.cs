@@ -30,6 +30,7 @@ namespace Assets.Source.UIManagement
             Vector2 position = Camera.main.WorldToScreenPoint(parent.position + new Vector3(dialogXOffset, dialogYOffset));
             GameObject go = Instantiate(dialogPrefab, Vector3.zero, Quaternion.identity, FindObjectOfType<Canvas>().transform);
             go.GetComponent<RectTransform>().anchoredPosition = position;
+            go.transform.SetAsFirstSibling();
             yield return new WaitForSeconds(0.4F);
             Text textComponent = go.GetComponentInChildren<Text>();
             textComponent.text = text;

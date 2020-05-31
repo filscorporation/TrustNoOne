@@ -103,6 +103,7 @@ namespace Assets.Source
             {
                 Life--;
                 lifeUI.SetLife(Life);
+                StartCoroutine(FieldManager.Instance.ShowTrap(currentTile));
 
                 if (Life == 0)
                 {
