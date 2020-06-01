@@ -1,28 +1,27 @@
 [
   {
     "Index": 0,
-    "PlayersLife": 3,
+    "PlayersLife": 2,
     "TileTypes": [
-      [ 0, 1, 0 ],
-      [ 2, 1, 0 ],
-      [ 0, 1, 0 ]
+      [ 2 ],
+      [ 1 ]
     ],
     "NPCs": [
       {
         "TypeIndex": 0,
-        "IsLiar": true,
+        "IsLiar": false,
         "Rules": [
           {
             "Name": "CantMoveOn",
             "Parameters": {
-              "TileType": 0
+              "TileType": 2
             }
           }
         ]
       },
       {
         "TypeIndex": 1,
-        "IsLiar": false,
+        "IsLiar": true,
         "Rules": [
           {
             "Name": "CantMoveOn",
@@ -38,8 +37,8 @@
     "Index": 1,
     "PlayersLife": 2,
     "TileTypes": [
-      [ 1, 2],
-      [ 1, 0]
+      [ 2, 1 ],
+      [ 1, 3 ]
     ],
     "NPCs": [
       {
@@ -47,9 +46,9 @@
         "IsLiar": false,
         "Rules": [
           {
-            "Name": "CantMoveOn",
+            "Name": "ShouldStartFrom",
             "Parameters": {
-              "TileType": 0
+              "TileType": 2
             }
           }
         ]
@@ -61,7 +60,140 @@
           {
             "Name": "CantMoveOn",
             "Parameters": {
-              "TileType": 1
+              "TileType": 3
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Index": 2,
+    "PlayersLife": 2,
+    "TileTypes": [
+      [ 2 ],
+      [ 3 ]
+    ],
+    "NPCs": [
+      {
+        "TypeIndex": 3,
+        "IsLiar": false,
+        "Rules": [
+          {
+            "Name": "ShouldFollow",
+            "Parameters": {
+              "TileTypeStart": 3,
+              "TileTypeEnd": 1
+            }
+          }
+        ]
+      },
+      {
+        "TypeIndex": 1,
+        "IsLiar": true,
+        "Rules": [
+          {
+            "Name": "ShouldFollow",
+            "Parameters": {
+              "TileTypeStart": 3,
+              "TileTypeEnd": 2
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Index": 3,
+    "PlayersLife": 3,
+    "TileTypes": [
+      [ 3, 1, 1, 2 ],
+      [ 1, 2, 3, 1 ]
+    ],
+    "NPCs": [
+      {
+        "TypeIndex": 3,
+        "IsLiar": false,
+        "Rules": [
+          {
+            "Name": "ShouldStartFrom",
+            "Parameters": {
+              "TileType": 3
+            }
+          }
+        ]
+      },
+      {
+        "TypeIndex": 2,
+        "IsLiar": true,
+        "Rules": [
+          {
+            "Name": "ShouldStartFrom",
+            "Parameters": {
+              "TileType": 2
+            }
+          }
+        ]
+      },
+      {
+        "TypeIndex": 0,
+        "IsLiar": false,
+        "Rules": [
+          {
+            "Name": "CantMoveDirection",
+            "Parameters": {
+              "Direction": 0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Index": 4,
+    "PlayersLife": 3,
+    "TileTypes": [
+      [ 2, 0, 1, 0, 2, 0, 3 ],
+      [ 3, 0, 3, 0, 1, 0, 2 ],
+      [ 1, 0, 3, 0, 3, 0, 3 ],
+      [ 3, 0, 3, 0, 1, 0, 3 ]
+    ],
+    "NPCs": [
+      {
+        "TypeIndex": 0,
+        "IsLiar": false,
+        "Rules": [
+          {
+            "Name": "ShouldFollow",
+            "Parameters": {
+              "TileTypeStart": 2,
+              "TileTypeEnd": 3
+            }
+          }
+        ]
+      },
+      {
+        "TypeIndex": 1,
+        "IsLiar": true,
+        "Rules": [
+          {
+            "Name": "ShouldFollow",
+            "Parameters": {
+              "TileTypeStart": 1,
+              "TileTypeEnd": 3
+            }
+          }
+        ]
+      },
+      {
+        "TypeIndex": 2,
+        "IsLiar": false,
+        "Rules": [
+          {
+            "Name": "CantFollow",
+            "Parameters": {
+              "TileTypeStart": 3,
+              "TileTypeEnd": 1
             }
           }
         ]

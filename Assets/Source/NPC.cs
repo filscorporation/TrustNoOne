@@ -48,7 +48,7 @@ namespace Assets.Source
         /// </summary>
         public IEnumerator AnimateBetray()
         {
-            NPCManager.Instance.StartCoroutine(DialogsManager.Instance.ShowDialog(GameObject.transform, "Misstake!"));
+            NPCManager.Instance.StartCoroutine(DialogsManager.Instance.ShowDialog(GameObject.transform, "Mistake!"));
             yield return new WaitForSeconds(1.3F);
             GameObject.GetComponent<Animator>().SetTrigger(betrayTrigger);
             Transform gunPoint = GameObject.GetComponentsInChildren<Transform>().First(c => c.gameObject.name == gunPointName);

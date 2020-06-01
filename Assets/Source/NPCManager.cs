@@ -66,7 +66,19 @@ namespace Assets.Source
                     RuleSpriteBuilder.Instance.TypeEnter(npc.Popup, ruleData.Parameters[ShouldStartFrom.TileTypeParam]);
                     break;
                 case nameof(CantMoveDirection):
-                    RuleSpriteBuilder.Instance.TypeEnter(npc.Popup, ruleData.Parameters[CantMoveDirection.DirectionParam]);
+                    RuleSpriteBuilder.Instance.DirectionCrossed(npc.Popup, (Direction)ruleData.Parameters[CantMoveDirection.DirectionParam]);
+                    break;
+                case nameof(ShouldFollow):
+                    RuleSpriteBuilder.Instance.TypeFollowed(
+                        npc.Popup,
+                        ruleData.Parameters[ShouldFollow.TileTypeStartParam],
+                        ruleData.Parameters[ShouldFollow.TileTypeEndParam]);
+                    break;
+                case nameof(CantFollow):
+                    RuleSpriteBuilder.Instance.TypeNotFollowed(
+                        npc.Popup,
+                        ruleData.Parameters[ShouldFollow.TileTypeStartParam],
+                        ruleData.Parameters[ShouldFollow.TileTypeEndParam]);
                     break;
                 default:
                     throw new NotSupportedException(ruleData.Name);

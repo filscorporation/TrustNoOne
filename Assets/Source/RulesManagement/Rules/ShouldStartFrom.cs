@@ -12,9 +12,12 @@ namespace Assets.Source.RulesManagement.Rules
 
         public override bool Check(Tile[,] field, List<Step> steps, Dictionary<string, int> parameters)
         {
+            if (steps.Count > 1)
+                return false;
+
             Vector2Int firstTo = steps.First().To;
             Tile firstTile = field[firstTo.x, firstTo.y];
-            return firstTile.TypeIndex == parameters[TileTypeParam];
+            return firstTile.TypeIndex != parameters[TileTypeParam];
         }
     }
 }

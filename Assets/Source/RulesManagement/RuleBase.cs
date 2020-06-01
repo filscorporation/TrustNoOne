@@ -23,9 +23,9 @@ namespace Assets.Source.RulesManagement
                 return Direction.Right;
             if (step.From.x > step.To.x)
                 return Direction.Left;
-            if (step.From.y < step.To.y)
-                return Direction.Up;
             if (step.From.y > step.To.y)
+                return Direction.Up;
+            if (step.From.y < step.To.y)
                 return Direction.Down;
             throw new Exception("Step on the same tile");
         }

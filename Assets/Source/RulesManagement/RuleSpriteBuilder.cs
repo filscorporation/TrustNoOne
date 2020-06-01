@@ -23,6 +23,7 @@ namespace Assets.Source.RulesManagement
         [SerializeField] private GameObject NPCPopupPrefab;
         private const float popupOffset = 1.4F;
         private const float spritesYOffset = -0.16F;
+        private const float spritesXOffset = 0.5F;
 
         /// <summary>
         /// Creates popup sprite above npc
@@ -76,7 +77,7 @@ namespace Assets.Source.RulesManagement
             sr1.sortingOrder = 10;
             sr1.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
             go1.transform.SetParent(parent);
-            go1.transform.localPosition = new Vector3(-1, spritesYOffset, 0);
+            go1.transform.localPosition = new Vector3(spritesXOffset, spritesYOffset, 0);
             GameObject go2 = new GameObject("Followed");
             SpriteRenderer sr2 = go2.AddComponent<SpriteRenderer>();
             sr2.sprite = sprites[(int)SpriteType.Followed];
@@ -90,7 +91,45 @@ namespace Assets.Source.RulesManagement
             sr3.sortingOrder = 10;
             sr3.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
             go3.transform.SetParent(parent);
-            go3.transform.localPosition = new Vector3(1, spritesYOffset, 0);
+            go3.transform.localPosition = new Vector3(-spritesXOffset, spritesYOffset, 0);
+        }
+
+        /// <summary>
+        /// Generates sprite of tile type that cant be followed by another tile type
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="typeIndex"></param>
+        /// <param name="typeFollowedIndex"></param>
+        public void TypeNotFollowed(Transform parent, int typeIndex, int typeFollowedIndex)
+        {
+            GameObject go1 = new GameObject("Type1");
+            SpriteRenderer sr1 = go1.AddComponent<SpriteRenderer>();
+            sr1.sprite = FieldManager.Instance.TileTypes[typeIndex];
+            sr1.sortingOrder = 10;
+            sr1.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
+            go1.transform.SetParent(parent);
+            go1.transform.localPosition = new Vector3(spritesXOffset, spritesYOffset, 0);
+            GameObject go2 = new GameObject("Followed");
+            SpriteRenderer sr2 = go2.AddComponent<SpriteRenderer>();
+            sr2.sprite = sprites[(int)SpriteType.Followed];
+            sr2.sortingOrder = 10;
+            sr2.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
+            go2.transform.SetParent(parent);
+            go2.transform.localPosition = new Vector3(0, spritesYOffset, 0);
+            GameObject go4 = new GameObject("Cross");
+            SpriteRenderer sr4 = go4.AddComponent<SpriteRenderer>();
+            sr4.sprite = sprites[(int)SpriteType.Cross];
+            sr4.sortingOrder = 11;
+            sr4.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
+            go4.transform.SetParent(parent);
+            go4.transform.localPosition = new Vector3(0, spritesYOffset, 0);
+            GameObject go3 = new GameObject("Type2");
+            SpriteRenderer sr3 = go3.AddComponent<SpriteRenderer>();
+            sr3.sprite = FieldManager.Instance.TileTypes[typeFollowedIndex];
+            sr3.sortingOrder = 10;
+            sr3.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
+            go3.transform.SetParent(parent);
+            go3.transform.localPosition = new Vector3(-spritesXOffset, spritesYOffset, 0);
         }
 
         /// <summary>
@@ -148,14 +187,14 @@ namespace Assets.Source.RulesManagement
             sr1.sortingOrder = 10;
             sr1.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
             go1.transform.SetParent(parent);
-            go1.transform.localPosition = new Vector3(-0.5F, spritesYOffset, 0);
+            go1.transform.localPosition = new Vector3(spritesXOffset / 2, spritesYOffset, 0);
             GameObject go2 = new GameObject("Type");
             SpriteRenderer sr2 = go2.AddComponent<SpriteRenderer>();
             sr2.sprite = FieldManager.Instance.TileTypes[typeIndex];
             sr2.sortingOrder = 10;
             sr2.material = parent.gameObject.GetComponent<SpriteRenderer>().material;
             go2.transform.SetParent(parent);
-            go2.transform.localPosition = new Vector3(0.5F, spritesYOffset, 0);
+            go2.transform.localPosition = new Vector3(-spritesXOffset / 2, spritesYOffset, 0);
         }
     }
 }

@@ -48,13 +48,19 @@ namespace Assets.Source
 
         [SerializeField] private Transform gunPoint;
         [SerializeField] private GameObject shootEffectPrefab;
+        [SerializeField] private AudioClip onIdolPickupSound;
+        [SerializeField] private List<AudioClip> stepSounds;
+        private const float stepSoundDelay = 0.2F;
+        private AudioSource audioSource;
 
         private void Start()
         {
+            audioSource = GetComponent<AudioSource>();
             AutoInputInitializer.InputManager.Subscribe(this);
             lifeUI.SetMaxLife(MaxLife);
             animator = GetComponentInChildren<Animator>();
             StartCoroutine(DialogsManager.Instance.ShowDialog(transform.GetChild(0), "Lets go!"));
+            audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()
@@ -84,6 +90,15 @@ namespace Assets.Source
                     State = PlayerState.Waiting;
                     OnMoveToReward();
                 }
+            }
+        }
+
+        private IEnumerator PlayStepsSound()
+        {
+            while (State == PlayerState.Moving || State == PlayerState.MovingToReward)
+            {
+                audioSource.PlayOneShot(stepSounds[Random.Range(0, stepSounds.Count)]);
+                yield return new WaitForSeconds(stepSoundDelay);
             }
         }
 
@@ -119,6 +134,7 @@ namespace Assets.Source
 
         private void OnMoveToReward()
         {
+            audioSource.PlayOneShot(onIdolPickupSound);
             StartCoroutine(GameManager.Instance.OnPlayerPassed());
         }
 
@@ -131,6 +147,7 @@ namespace Assets.Source
                 return;
 
             State = tile == null ? PlayerState.MovingToReward : PlayerState.Moving;
+            StartCoroutine(PlayStepsSound());
             animator.SetBool(walkAnimatorParam, true);
             currentTile = tile;
         }
@@ -148,6 +165,9 @@ namespace Assets.Source
 
             if (currentTile == null)
                 return tile.X == 0;
+
+            if (tile.TypeIndex == 0)
+                return false;
 
             return (currentTile.X == tile.X && Mathf.Abs(currentTile.Y - tile.Y) == 1)
                 || (currentTile.Y == tile.Y && Mathf.Abs(currentTile.X - tile.X) == 1);

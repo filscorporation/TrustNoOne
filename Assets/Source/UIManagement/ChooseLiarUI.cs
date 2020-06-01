@@ -23,7 +23,9 @@ namespace Assets.Source.UIManagement
                 Vector2 position = Camera.main.WorldToScreenPoint(npc.GameObject.transform.position);
                 GameObject go = Instantiate(onLiarUI, Vector3.zero, Quaternion.identity, transform);
                 go.GetComponent<RectTransform>().anchoredPosition = position;
-                go.GetComponent<Button>().onClick.AddListener(() => OnChooseLiarClicked(npc));
+                Button button = go.GetComponent<Button>();
+                button.onClick.AddListener(() => OnChooseLiarClicked(npc));
+                button.onClick.AddListener(() => FindObjectOfType<Canvas>().GetComponent<AudioSource>().Play());
             }
 
             yield break;
