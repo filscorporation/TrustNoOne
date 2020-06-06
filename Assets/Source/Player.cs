@@ -163,11 +163,11 @@ namespace Assets.Source
                 return currentTile.X == FieldManager.Instance.Field.GetLength(0) - 1;
             }
 
-            if (currentTile == null)
-                return tile.X == 0;
-
             if (tile.TypeIndex == 0)
                 return false;
+
+            if (currentTile == null)
+                return tile.X == 0;
 
             return (currentTile.X == tile.X && Mathf.Abs(currentTile.Y - tile.Y) == 1)
                 || (currentTile.Y == tile.Y && Mathf.Abs(currentTile.X - tile.X) == 1);

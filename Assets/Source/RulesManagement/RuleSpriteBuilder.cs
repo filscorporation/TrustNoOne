@@ -23,7 +23,7 @@ namespace Assets.Source.RulesManagement
         [SerializeField] private GameObject NPCPopupPrefab;
         private const float popupOffset = 1.4F;
         private const float spritesYOffset = -0.16F;
-        private const float spritesXOffset = 0.5F;
+        private const float spritesXOffset = 0.45F;
 
         /// <summary>
         /// Creates popup sprite above npc

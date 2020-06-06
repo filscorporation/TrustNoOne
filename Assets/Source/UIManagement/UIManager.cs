@@ -15,6 +15,7 @@ namespace Assets.Source.UIManagement
         [SerializeField] private GameObject chooseLiarScreen;
         [SerializeField] private GameObject wonScreen;
         [SerializeField] private ChooseLiarUI chooseLiarUI;
+        [SerializeField] private GameObject helpScreen;
 
         public void OnRestartButtonClick()
         {
@@ -38,6 +39,11 @@ namespace Assets.Source.UIManagement
         {
             yield return new WaitForSeconds(0.5F);
             SceneManager.LoadScene(MainMenuUIManager.MainMenuSceneName);
+        }
+
+        public void OnHelpButtonClick()
+        {
+            helpScreen.SetActive(!helpScreen.activeInHierarchy);
         }
 
         public void OnToNextLevelButtonClick()

@@ -21,8 +21,10 @@ namespace Assets.Source.UIManagement
             foreach (NPC npc in NPCManager.Instance.NPCs)
             {
                 Vector2 position = Camera.main.WorldToScreenPoint(npc.GameObject.transform.position);
-                GameObject go = Instantiate(onLiarUI, Vector3.zero, Quaternion.identity, transform);
+                GameObject go = Instantiate(onLiarUI, Vector3.zero, Quaternion.identity);
                 go.GetComponent<RectTransform>().anchoredPosition = position;
+                go.transform.SetParent(transform);
+                go.transform.localScale = Vector3.one;
                 Button button = go.GetComponent<Button>();
                 button.onClick.AddListener(() => OnChooseLiarClicked(npc));
                 button.onClick.AddListener(() => FindObjectOfType<Canvas>().GetComponent<AudioSource>().Play());

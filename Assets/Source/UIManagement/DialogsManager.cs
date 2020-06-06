@@ -28,8 +28,10 @@ namespace Assets.Source.UIManagement
         {
             yield return new WaitForEndOfFrame();
             Vector2 position = Camera.main.WorldToScreenPoint(parent.position + new Vector3(dialogXOffset, dialogYOffset));
-            GameObject go = Instantiate(dialogPrefab, Vector3.zero, Quaternion.identity, FindObjectOfType<Canvas>().transform);
+            GameObject go = Instantiate(dialogPrefab, Vector3.zero, Quaternion.identity);
             go.GetComponent<RectTransform>().anchoredPosition = position;
+            go.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            go.transform.localScale = Vector3.one;
             go.transform.SetAsFirstSibling();
             yield return new WaitForSeconds(0.4F);
             Text textComponent = go.GetComponentInChildren<Text>();

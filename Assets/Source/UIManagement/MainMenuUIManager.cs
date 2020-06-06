@@ -15,6 +15,7 @@ namespace Assets.Source.UIManagement
 
         public const string GameSceneName = "GameScene";
         public const string MainMenuSceneName = "MainMenuScene";
+        private const int levelButtonsInACollumn = 5;
 
         private void Start()
         {
@@ -40,9 +41,15 @@ namespace Assets.Source.UIManagement
         {
             LevelManager.Instance.LoadAllLevels();
             int i = 0;
+            int column = 0;
             int maxOpenedLevel = LevelManager.Instance.GetLevelsOpened();
             foreach (Level level in LevelManager.Instance.Levels)
             {
+                if (i == levelButtonsInACollumn)
+                {
+                    i = 0;
+                    column++;
+                }
                 GameObject go = Instantiate(levelButtonPrefab, Vector3.zero, Quaternion.identity, levelSelectPanel.transform);
                 Button button = go.GetComponent<Button>();
                 button.onClick.AddListener(() => OnLevelClick(level.Index));
@@ -51,7 +58,7 @@ namespace Assets.Source.UIManagement
                     button.interactable = false;
                 }
                 go.transform.GetChild(0).gameObject.GetComponent<Text>().text = $"Level {level.Index + 1}";
-                go.GetComponent<RectTransform>().anchoredPosition = new Vector2(250, -100 - 200 * i);
+                go.GetComponent<RectTransform>().anchoredPosition = new Vector2(-300 + column * 450, -100 - 200 * i);
                 i++;
             }
         }

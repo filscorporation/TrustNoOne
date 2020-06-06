@@ -13,6 +13,9 @@ namespace Assets.Source.RulesManagement.Rules
 
         public override bool Check(Tile[,] field, List<Step> steps, Dictionary<string, int> parameters)
         {
+            if (steps.Count == 1)
+                return false;
+
             Vector2Int lastTo = steps.Last().To;
             Vector2Int lastFrom = steps.Last().From;
             Tile lastTileStart = field[lastFrom.x, lastFrom.y];
